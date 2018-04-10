@@ -37,62 +37,26 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 
 Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 
-## Editor Settings
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
 
-## Code Style
+## Reflection
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+A PID controller is used here to calculate the steering angle of the simulated car. The PID controller calculates an error value (cross track error) between the desired trajectory and the current position and applies a correction to a parameter(in this case steering angle) based on proportional, integral and differential terms.
 
-## Project Instructions and Rubric
+The three terms contribute as follows
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+* The Proportional gain or Kp here causes the car to steer in proportion to the cross track error. The cross track error determines the position error of the car from the center of the lane. High values of the proportionality term cause the steering angle to be proportional to the error which leads to the car wobbling a lot from left to right when it tries to correct the position and also leads to a lot of overshooting of position of the car. At lower values the steering angle is changed slowly proportional to the error and hence oscillations are reduced.
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+* The Differential gain or Kd here is introduced to control the rate of change of error ie. it is the derivative of change of cross track error from one position to next. The differential term is used to counter the effects of overshooting by using the derivative to counter steer and smoothen out the correction when it notices that the error is becoming smaller/larger over time. This results in a smoother correction trajectory instead of an oscillating one.
 
-## Hints!
+* The Integral gain or Ki is introduced here with summation of all cross track errors which help in countering the effects of system bias in the car. When the cross track error is continuously large at a constant value(The car is travelling continuously shifted from the center  along one side of the lane) then the summation of the errors multiplied by the integral gain(Ki) term is used to compensate the bias and slowly bring the car to the center of the lane. It is also useful in correcting the position of the car when the it  travels along curved road by countering the drift in the car and brings it to the center.
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
 
-## Call for IDE Profiles Pull Requests
+I initially started tuning the parameters with the values suggested in the classroom sessions which were Proportional gain of 0.2 , differential gain of 3.0 and integral gain of 0.004. When I used these values for the PID controller I found that it was not performing well due to slow processing capabilities of the machine (Pentium processor). I had to adjust the throttle value to 0.08 to get slightly better results. Later I started with tuning the gain parameters and started with a Kp of 1 which led to lot of oscillations by keeping the other 2 parameters at zero. I slowly reduced the value of Kp until the oscillations were minimal. Later I started with a value of 1 for the differential gain which brought back the oscillations and hence I had to reduce the term till 0.05 to get good results , still I was facing issues in the turnings and curves of the track hence I set the value ok Ki at 0.5 to try and ensure minimal deviation from the center of the lane during simulation.
 
-Help your fellow students!
+The video of my result can be seen [here]()
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
