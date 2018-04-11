@@ -55,7 +55,7 @@ The three terms contribute as follows
 
  I started with tuning the gain parameters and set the value of Kp to 1 which led to lot of oscillations by keeping the other 2 parameters at zero. I slowly reduced the value of Kp until the oscillations were minimal. Later I started with a value of 1 for the differential gain which brought back the oscillations and hence I had to reduce the term till 0.5 to get good results , still I was facing issues in the turnings and curves of the track hence I set the value ok Ki at 0.005 to try and ensure minimal deviation from the center of the lane during simulation. These values worked well in my machine(which has a pentium processor) but gave bad results in machines with better performance. Hence I tried various combinations and found that the values provided in the classroom session were found to be optimal with a throttle of 0.3 in most machines and worked well with a throttle of 0.1 in machines with lower performance and decided to use those values finally.
 
-The video of my result can be seen [here](https://github.com/AkshathaHolla91/CarND-PID-Control-Project/blob/master/output_video.mp4)
+The video of my result can be seen [here](https://github.com/AkshathaHolla91/CarND-PID-Control-Project/blob/master/output_video.m4v)
 
 
 
